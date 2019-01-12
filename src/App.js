@@ -1,26 +1,74 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Switch, Route, Link } from 'react-router-dom';
+
+import { Layout, Menu, Icon } from 'antd';
+
+import DashboardScreen from './containers/DashboardScreen';
+import BetScreen from './containers/BetScreen'
+import HelpScreen from './containers/HelpScreen'
+
+const { Header, Sider, Content } = Layout;
 
 class App extends Component {
+
+  state = {
+    collapsed: false,
+  };
+  
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Layout>
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={this.state.collapsed}
+        >
+          <div className="logo" />
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu.Item key="1">
+              <Link to="/">
+                <Icon type="home" />
+                <span>Dashboard</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Link to="/bet">
+                <Icon type="trophy" />
+                <span>Bet</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+             <Link to="/help">
+               <Icon type="info-circle-o" />
+                <span>Help</span>
+             </Link>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}>
+            <Icon
+              className="trigger"
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle}
+            />
+          </Header>
+          
+            <Switch>
+              <Route path="/" exact={true} component={DashboardScreen} />
+              <Route path="/bet" exact={true} component={BetScreen} />
+              <Route path="/help" exact={true} component={HelpScreen} />
+            </Switch>
+        </Layout>
+      </Layout>
     );
   }
 }
