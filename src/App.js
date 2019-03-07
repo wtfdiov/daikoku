@@ -1,76 +1,20 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { Layout, Menu, Icon } from 'antd';
-
-import DashboardScreen from './containers/DashboardScreen';
-import BetScreen from './containers/BetScreen'
-import HelpScreen from './containers/HelpScreen'
-
-const { Header, Sider, Content } = Layout;
+import PrivateRoute from './components/common/router/PrivateRoute';
+import Main from './containers';
+import Login from './containers/LoginScreen';
 
 class App extends Component {
-
-  state = {
-    collapsed: false,
-  };
-  
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  }
-
   render() {
     return (
-      <Layout>
-        <Sider
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-        >
-          <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">
-              <Link to="/">
-                <Icon type="home" />
-                <span>Dashboard</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link to="/bet">
-                <Icon type="trophy" />
-                <span>Bet</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-             <Link to="/help">
-               <Icon type="info-circle-o" />
-                <span>Help</span>
-             </Link>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
-            <Icon
-              className="trigger"
-              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={this.toggle}
-            />
-          </Header>
-          
-            <Switch>
-              <Route path="/" exact={true} component={DashboardScreen} />
-              <Route path="/bet" exact={true} component={BetScreen} />
-              <Route path="/help" exact={true} component={HelpScreen} />
-            </Switch>
-        </Layout>
-      </Layout>
+      <Switch>
+        <PrivateRoute exact path="/" component={Main} />
+        <Route path="/login" component={Login} />
+      </Switch>
     );
   }
 }
 
-export default App;
+export default withRouter(connect(null, null)(App));
