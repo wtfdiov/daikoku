@@ -13,21 +13,25 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: '',
+      email: '',
       password: ''
     }
   }
 
-  onChangeUserName = (e) => {
-    this.setState({ userName: e.target.value });
+  onChangeEmail = (e) => {
+    this.setState({ email: e.target.value });
   }
 
   onChangePassword = (e) => {
     this.setState({ password: e.target.value })
   }
 
+  handleLogin = () => {
+    this.props.onLogin(this.state);
+  }
+
   render() {
-    const { userName, password } = this.state;
+    const { email, password } = this.state;
     return (
       <Layout className="layout">
         <Content style={{
@@ -50,8 +54,8 @@ class Login extends Component {
                     size="large"
                     placeholder="Nome de usuário"
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    value={userName}
-                    onChange={this.onChangeUserName}
+                    value={email}
+                    onChange={this.onChangeEmail}
                   />
 
                   <Input.Password
@@ -69,7 +73,7 @@ class Login extends Component {
                   <Button
                     block
                     type="primary"
-                    onClick={this.props.onLogin}
+                    onClick={this.handleLogin}
                   >
                     ENTRAR
                   </Button>
@@ -87,7 +91,7 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onLogin: () => dispatch(actions.tryAuth())
+  onLogin: (credentials) => dispatch(actions.tryAuth(credentials))
 });
 
 

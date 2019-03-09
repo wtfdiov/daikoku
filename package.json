@@ -31,5 +31,6 @@
     "reactotron-react-js": "^3.0.1",
     "reactotron-redux": "^3.1.0",
     "reactotron-redux-saga": "^4.2.0"
-  }
+  },
+  "proxy": "https://bishamon-service.herokuapp.com"
 }

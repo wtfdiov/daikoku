@@ -11,9 +11,7 @@ import history from './history';
 import store from './store/configureStore';
 import * as actions from './store/actions';
 
-
-
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('refreshToken');
 if (token) {
   store.dispatch(actions.tryAuthFromStorage());
 }

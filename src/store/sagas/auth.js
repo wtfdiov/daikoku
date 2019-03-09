@@ -1,26 +1,20 @@
+import axios from 'axios';
 import { put, call } from 'redux-saga/effects';
 import * as actions from '../actions';
-import Reactotron from 'reactotron-react-js';
 
 import history from '../../history';
 
 export function* tryAuthSaga(action) {
-  const userData = {
-    name: 'Diovane Gualberto',
-    token: 'aehuaevaejna'
-  }
-  Reactotron.log(action.credentials)
-  yield call([localStorage, 'setItem'], 'token', JSON.stringify(userData));
-  yield put(actions.authSuccess(userData));
+  const response = yield axios.post(`/login`, action.credentials);
+  const { user, accessToken, refreshToken } = response.data;
+  yield call([localStorage, 'setItem'], 'accessToken', JSON.stringify(accessToken));
+  yield call([localStorage, 'setItem'], 'refreshToken', JSON.stringify(refreshToken));
+  yield put(actions.authSuccess(user));
   yield call([history, 'push'], '/');
 }
 
 export function* tryAuthFromStorageSaga(action) {
-  const credentials = {
-    login: '',
-    password: ''
-  };
-  yield put(actions.tryAuth(credentials));
+  yield put(actions.tryAuth(action.credentials));
 }
 
 export function* logOutSaga() {
